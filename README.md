@@ -1,0 +1,1 @@
+Example Apollo / React app with some component tests written using Cypress.

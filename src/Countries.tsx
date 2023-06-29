@@ -1,4 +1,3 @@
-import { client } from "./graphql";
 import { gql, useQuery } from "@apollo/client";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const GET_COUNTRIES = gql`
+export const GET_COUNTRIES = gql`
   query GET_COUNTRIES {
     countries(filter: { code: { in: ["AU", "US"] } }) {
       __typename
@@ -27,12 +26,16 @@ const GET_COUNTRIES = gql`
 export function Countries() {
   const { loading, error, data } = useQuery(GET_COUNTRIES);
 
+  console.log({
+    loading, error, data
+  })
+
   if (loading) {
-    return <p>Loading...</p>;
+    return <p role="alert" aria-label="Loading">Loading...</p>;
   }
 
   if (error) {
-    return <p>Error : {error.message}</p>;
+    return <p role="alert">Error: {error.message}</p>;
   }
 
   return (
@@ -59,9 +62,7 @@ export function Countries() {
               <TableCell align="right">{country.emoji}</TableCell>
               <TableCell align="right">{country.capital}</TableCell>
               <TableCell align="right">
-                  {country.languages.map((language: any) => (
-                    <span key={language.code}>{language.name}</span>
-                  ))}
+                  {country.languages.map((x: any) => x.name).join(', ')}
               </TableCell>
               <TableCell align="right">{country.awsRegion}</TableCell>
             </TableRow>
